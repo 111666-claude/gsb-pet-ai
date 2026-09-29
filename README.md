@@ -20,11 +20,11 @@ go run ./cmd/pet-ai --sample stuck
 - 不变量：永不攻击无敌或死亡目标；`Switches` 单调不减；同一批帧重复回放结果相同。
 - 规模：单帧 1 万个可选目标 0.5 秒内完成，内存 O(目标数)；不许每帧全表排序。
 
-## 现在的行为
+## 实现要点
 
-- `Tick` 只跳过 `HP <= 0`，无敌与距离都没看。
-- 冷却用 `Frame` 计数，帧率一变 CD 就变。
-- `StuckFrames`/`Switches` 从没被写过。
+- `Tick`/`TickDelta` 过滤 `HP <= 0`、无敌与超出 `AttackRange` 的攻击目标。
+- 冷却按毫秒累积（`CooldownMS`），帧率变化不影响 CD。
+- 连续 `StuckFrames` 帧够不到目标就换目标或进入 idle，`Switches` 加一。
 
 ## 输出
 
